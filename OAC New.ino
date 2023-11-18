@@ -3,11 +3,14 @@
 */
 #include <Servo.h>
 #include <AFMotor.h>
+#include<SoftwareSerial.h>
 #define Echo A0
 #define Trig A1
 #define motor 10
 #define Speed 255
 #define spoint 103
+#define rxPin 8
+#define txPin 9
 char value;
 int distance;
 int Left;
@@ -16,6 +19,7 @@ int L = 0;
 int R = 0;
 int L1 = 0;
 int R1 = 0;
+SoftwareSerial bluetooth(8,9);
 Servo servo;
 AF_DCMotor M1(1);
 AF_DCMotor M2(2);
@@ -23,6 +27,7 @@ AF_DCMotor M3(3);
 AF_DCMotor M4(4);
 void setup() {
   Serial.begin(9600);
+  bluetooth.begin(9600);
   pinMode(Trig, OUTPUT);
   pinMode(Echo, INPUT);
   servo.attach(motor);
@@ -33,13 +38,13 @@ void setup() {
 }
 void loop() {
   Obstacle();
- // Bluetoothcontrol();
-  //voicecontrol();
+  Bluetoothcontrol();
+  voicecontrol();
 }
 void Bluetoothcontrol() {
-  if (Serial.available() > 0) {
-    value = Serial.read();
-    Serial.println(value);
+  if (bluetooth.available() > 0) {
+    value = bluetooth.readStringUntil('\n');
+    bluetooth.println(value);
   }
   if (value == 'F') {
     forward();
@@ -81,9 +86,9 @@ void Obstacle() {
   }
 }
 void voicecontrol() {
-  if (Serial.available() > 0) {
-    value = Serial.read();
-    Serial.println(value);
+  if (bluetooth.available() > 0) {
+    value = bluetooth.readStringUntil('\n');
+    bluetooth.println(value);
     if (value == '^') {
       forward();
     } else if (value == '-') {
@@ -149,20 +154,20 @@ void right() {
   M2.setSpeed(Speed);
   M3.setSpeed(Speed);
   M4.setSpeed(Speed);
-  M1.run(BACKWARD);
-  M2.run(BACKWARD);
-  M3.run(FORWARD);
-  M4.run(FORWARD);
+  M3.run(BACKWARD);
+  M4.run(BACKWARD);
+  M1.run(FORWARD);
+  M2.run(FORWARD);
 }
 void left() {
   M1.setSpeed(Speed); 
   M2.setSpeed(Speed);
   M3.setSpeed(Speed);
   M4.setSpeed(Speed);
-  M1.run(FORWARD);
-  M2.run(FORWARD);
-  M3.run(BACKWARD);
-  M4.run(BACKWARD);
+  M3.run(FORWARD);
+  M4.run(FORWARD);
+  M1.run(BACKWARD);
+  M2.run(BACKWARD);
 }
 void Stop() {
   M1.run(RELEASE);
