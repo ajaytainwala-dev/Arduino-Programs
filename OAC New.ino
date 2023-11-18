@@ -125,24 +125,40 @@ int ultrasonic() {
   return cm;
 }
 void forward() {
+  M1.setSpeed(Speed);
+  M2.setSpeed(Speed);
+  M3.setSpeed(Speed);
+  M4.setSpeed(Speed);
   M1.run(FORWARD);
   M2.run(FORWARD);
   M3.run(FORWARD);
   M4.run(FORWARD);
 }
 void backward() {
+  M1.setSpeed(Speed);
+  M2.setSpeed(Speed);
+  M3.setSpeed(Speed);
+  M4.setSpeed(Speed);
   M1.run(BACKWARD);
   M2.run(BACKWARD);
   M3.run(BACKWARD);
   M4.run(BACKWARD);
 }
 void right() {
+  M1.setSpeed(Speed);
+  M2.setSpeed(Speed);
+  M3.setSpeed(Speed);
+  M4.setSpeed(Speed);
   M1.run(BACKWARD);
   M2.run(BACKWARD);
   M3.run(FORWARD);
   M4.run(FORWARD);
 }
 void left() {
+  M1.setSpeed(Speed); 
+  M2.setSpeed(Speed);
+  M3.setSpeed(Speed);
+  M4.setSpeed(Speed);
   M1.run(FORWARD);
   M2.run(FORWARD);
   M3.run(BACKWARD);
